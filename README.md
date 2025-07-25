@@ -87,8 +87,9 @@ import pybind11
 
 ext_modules = [
     Extension(
-        'chr_module', #模块名
-        ['chromosome.cpp'], #C++文件（图像编码并行加速程序）
+        'chr_module', # 模块名
+        
+        ['chromosome.cpp'], # C++文件（图像编码并行加速程序）
         include_dirs=[
             pybind11.get_include(),
             '/home/zxh/anaconda3/envs/csv-filter/include',  # Conda 环境中 hdf5 的头文件路径
