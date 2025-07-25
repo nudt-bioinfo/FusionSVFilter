@@ -26,8 +26,8 @@ ext_modules = [
         ['chromosome.cpp'],
         include_dirs=[
             pybind11.get_include(),
-            '/home/zxh/anaconda3/envs/csv-filter/include',  # Conda 环境中 hdf5 的头文件路径
-            '/home/zxh/anaconda3/envs/csv-filter/include/htslib',  # Conda 环境中 htslib 的头文件路径
+            '/home/username/anaconda3/envs/fsv-filter/include',  # Conda 环境中 hdf5 的头文件路径
+            '/home/username/anaconda3/envs/fsv-filter/include/htslib',  # Conda 环境中 htslib 的头文件路径
         ],
         language='c++',
         extra_compile_args=[
@@ -37,7 +37,7 @@ ext_modules = [
             "-fopenmp",
         ],
         extra_link_args=[
-            "-L/home/zxh/anaconda3/envs/csv-filter/lib",   # Conda 环境中的库文件路径
+            "-L/home/username/anaconda3/envs/fsv-filter/lib",   # Conda 环境中的库文件路径
             "-lhts",                                       # 链接 htslib
             "-lhdf5",                                      # 链接 HDF5
         ],
