@@ -6,66 +6,89 @@ Structural variations (SVs) play an important role in human diseases, biological
 
 ## Experimental Configuration
 Firstly, anaconda3 needs to be installed:
+
 `Anaconda3-2024.02-1-Linux-x86_64.sh`
-Download Anaconda 3-2024.02-1-Lux-x86_64.sh from the Anaconda official website and place it in a certain path.
+
+Download Anaconda 3-2024.02-1-Lux-x86_64.sh from the Anaconda official website and place it in a certain path:
+
 `$ chmod +x Anaconda3-2024.02-1-Linux-x86_64.sh`
+
 `$ ./Anaconda3-2024.02-1-Linux-x86_64.sh`
 
 Add conda to PATH:
+
 `$ source ~/D/anaconda3/bin/activate`
 
 Enable base environment:
+
 `$ conda activate base`
 
-create a new environment
+create a new environment:
+
 `$ conda create -n fsv-filter python=3.6 -y`
 
 activate the fsv-filter environment
+
 `$ conda activate fsv-filter`
 
 install pytorch/cudatoolkit/torchvision/torchaudio:
+
 `$ conda install pytorch==1.10.2 torchvision==0.11.3 torchaudio==0.10.2 cudatoolkit==11.3.1 -c pytorch -y`
 
 install numpy:
+
 `$ pip install numpy==1.19.2`
 
 install pytorch-lightning:
+
 `$ conda install pytorch-lightning=1.5.10 -c conda-forge -y`
 
 install redis:
+
 `$ conda install redis -y`
 
 install scikit-learn:
+
 `$ conda install scikit-learn -y`
 
 install matplotlib:
+
 `$ conda install matplotlib -y`
 
 install samtools:
+
 `$ conda install samtools -c bioconda`
 
 install parallel:
+
 `$ sudo apt install parallel` 
 
 install ray[tune]:
+
 `$ pip install ray[tune]==1.6.0`
 
 install pudb:
+
 `$ pip install pudb`
 
 install hyperopt:
+
 `$ pip install hyperopt`
 
 install pysam:
+
 `$ pip install pysam==0.15.4`
 
 install pybind11:
+
 `$ pip install pybind11`
 
 ### htslib (C++version of Samtools)
 In this paper, we developed an image encoding parallel acceleration program in C++, so we need to install htslib and hdf5.
 Two installation methods for htslib:
+
 1. 
+
 `$ sudo apt install libhts-dev`
 
 2.
@@ -73,15 +96,18 @@ After installing Samtools, htslib was also installed
 
 ### hdf5(C++ & python)
 C++:
+
 ```
 $ sudo apt update
 $ sudo apt install libhdf5-dev
 ```
 
 python:
+
 `$ pip install h5py`
 
 ### setup.py(the bridge file of Python calls C++)
+
 ```
 from setuptools import setup, Extension
 import pybind11
@@ -93,8 +119,8 @@ ext_modules = [
         ['chromosome.cpp'], # C++文件（图像编码并行加速程序）
         include_dirs=[
             pybind11.get_include(),
-            '/home/zxh/anaconda3/envs/csv-filter/include',  # Conda 环境中 hdf5 的头文件路径
-            '/home/zxh/anaconda3/envs/csv-filter/include/htslib',  # Conda 环境中 htslib 的头文件路径
+            '/home/username/anaconda3/envs/csv-filter/include',  # Conda 环境中 hdf5 的头文件路径
+            '/home/username/anaconda3/envs/csv-filter/include/htslib',  # Conda 环境中 htslib 的头文件路径
         ],
         language='c++',
         extra_compile_args=[
@@ -104,7 +130,7 @@ ext_modules = [
             "-fopenmp",
         ],
         extra_link_args=[
-            "-L/home/zxh/anaconda3/envs/csv-filter/lib",   # Conda 环境中的库文件路径
+            "-L/home/username/anaconda3/envs/csv-filter/lib",   # Conda 环境中的库文件路径
             "-lhts",                                       # 链接 htslib
             "-lhdf5",                                      # 链接 HDF5
         ],
@@ -118,11 +144,15 @@ setup(
 ```
 
 If you want to recompile chromosome.cpp, please use the following command：
+
 `$ python setup.py clean --all`
+
 `$ python setup.py build_ext --inplace`
 
 If you encounter this problem:"absl-py version 2.0.0 is too new, Downgrade absl-py from version 2.0.0 to version 1.4.0":
+
 `$ pip uninstall absl-py`
+
 `$ pip install absl-py==1.4.0`
 
 ### conclusion
@@ -159,25 +189,32 @@ ResNet50_2C_97.ckpt(https://github.com/nudt-bioinfo/FusionSVFilter/tree/main/Fus
 In the src folder
 
 preprocess VCF data:
+
 `$ python vcf_data_process.py`
 
 Generate grayscale images using a parallel image encoding program compiled with C++:
+
 `$ python parallel_image_encoding_acceleration_file.py`
 
 Clean Negative sample in the dataset:
+
 `$ python clean_dataset.py`
 
 Merge image data and label:
+
 `$ python data_spread.py`
 
 train:
+
 `$ python train.py`
 
 ### predict and filter
 predict:
+
 `$ python predict.py`
 
 filter:
+
 `$ python filter_predict.py`
 
 ## Expansion: structural variation fusion filtering
