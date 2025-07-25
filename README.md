@@ -82,6 +82,7 @@ python:
 `$ pip install h5py`
 
 ### setup.py(the bridge file of Python calls C++)
+```
 from setuptools import setup, Extension
 import pybind11
 
@@ -114,6 +115,7 @@ setup(
     name='chr_module',
     ext_modules=ext_modules,
 )
+```
 
 If you want to recompile chromosome.cpp, please use the following command：
 `$ python setup.py clean --all`
